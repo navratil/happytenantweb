@@ -1,7 +1,12 @@
-Happy Tenant website
-==========================================
+# Happy Tenant website
 
-TravisCI [![Build Status](https://travis-ci.org/navratil/happytenantweb.svg?branch=master)](https://travis-ci.org/navratil/happytenantweb)
+## Website URL
+
+* [www.happytenant.net](https://www.happytenant.net "Happy Tenant (Global)")
+* [www.happytenant.ie](https://www.happytenant.ie "Happy Tenant (Ireland)")
+
+## Build status
 
 CircleCI [![CircleCI](https://circleci.com/gh/navratil/happytenantweb.svg?style=svg)](https://circleci.com/gh/navratil/happytenantweb)
+
 
