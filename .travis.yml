@@ -1,0 +1,44 @@
+language: python
+
+addons:
+  apt:
+    packages:
+      - openjdk-8-jre  # install Java8 as required by html5validator (vnu.jar)
+
+#services:
+
+env:
+ global:
+   - AWS_S3_BUCKET=www.happytenant.net   ## !! without s:// as with aws s3 comand 
+# These global enviromental variables are required and defined @ travis-ci.org / repository / settings / Environment Variables
+#  - AWS_REGION=ue-west-1
+#  - AWS_S3_ACCESS_KEY=
+#  - AWS_S3_SECRET_KEY=
+
+#cache:
+#before_install:
+
+install:
+ - pip install html5validator
+ - wget https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar
+
+before_script:
+  - ls -l webroot/assets/css/*.css   # check CSS sizes *before* mimifing
+
+script:
+  - java -jar yuicompressor-2.4.8.jar webroot/assets/css/*.css -o '.css$:.css'
+  - html5validator --root webroot/
+
+deploy:
+  skip_cleanup: true   # we want to deploy mimified CSS
+  provider: s3
+  region: ${AWS_REGION}
+  access_key_id: ${AWS_S3_ACCESS_KEY}
+  secret_access_key: ${AWS_S3_SECRET_KEY}
+  bucket: ${AWS_S3_BUCKET}
+  acl: public_read
+  local_dir: webroot
+#  upload-dir: travis-builds
+  
+  
+#notifications:

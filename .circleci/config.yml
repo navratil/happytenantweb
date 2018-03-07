@@ -1,0 +1,33 @@
+version: 2
+
+machine:
+  timezone: Europe/Dublin
+
+jobs:
+  build:
+    environment:
+      AWS_S3_BUCKET: www.happytenant.net
+#     AWS_S3_ACCESS_KEY=   # defined as (secret) environmental variable in CircleCI UI
+#     AWS_S3_SECRET_KEY=   # defined as (secret) environmental variable in CircleCI UI	
+    docker:
+      - image: "circleci/python:3.6-stretch-browsers"
+    steps:
+      - checkout
+      - run:
+          name: Install AWS tools
+          command: sudo pip install awscli
+      - run:
+          name: Install HTML5Validator
+          command: pip install --user html5validator
+      - run:
+          name: Install CSS compressor
+          command: wget https://github.com/yui/yuicompressor/releases/download/v2.4.8/yuicompressor-2.4.8.jar
+      - run:
+          name: Compress CSS
+          command: java -jar yuicompressor-2.4.8.jar webroot/assets/css/*.css -o '.css$:.css'
+      - run:
+          name: TEST HTML syntax
+          command: /home/circleci/.local/bin/html5validator --root webroot/
+      - deploy:
+          name: Deployment to AWS
+          command: aws s3 sync webroot s3://$AWS_S3_BUCKET --acl public-read --delete
