@@ -1,10 +1,8 @@
 @echo off
-echo ========================
-echo === Sync to AWS / S3 ===
-echo ========================
+echo ### Synchronizing to AWS S3
 echo.
 
-aws s3 sync ../webroot s3://www.happytenant.net --delete --acl public-read --dryrun
+set S3_BUCKET=www.happytenant.ie
 
-rem  End
-pause
+aws s3 sync ../webroot s3://%S3_BUCKET% --delete --acl public-read 
+rem --dryrun
