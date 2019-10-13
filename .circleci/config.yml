@@ -30,6 +30,8 @@ jobs:
           name: TEST HTML syntax
           command: /home/circleci/.local/bin/html5validator --root webroot/
       - deploy:
-          name: Deployment to AWS
+          name: Deployment to .IE
           command: aws s3 sync webroot s3://$AWS_S3_BUCKET --acl public-read --delete
+      - deploy:
+          name: Deployment to .NET
           command: aws s3 sync webroot s3://$AWS_S3_BUCKET2 --acl public-read --delete
